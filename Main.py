@@ -12,6 +12,7 @@ opt[2] = {'Type': 'C', 'Position': 'Short', 'Payoff': 5000, 'Strike': 35600, 'Ma
 
 book = Book(data, opt)
 book.report()
+
 #for i in book.book:
     #print(i)
     #print(book.book[i])

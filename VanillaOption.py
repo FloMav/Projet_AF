@@ -1,3 +1,5 @@
+import pandas as pd
+
 from BlackScholes import BlackScholes
 
 
@@ -36,22 +38,28 @@ class VanillaOption(BlackScholes):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
         self.__typ = typ
         self.__pricing_method = pricing_method
+        self.__record = pd.DataFrame(columns=['Spot', 'Volatility', 'Delta', 'Gamma'])
+        self.recorder()
+
+    @property
+    def record(self):
+        return self.__record
+
+    @property
+    def spot(self) -> float:
+        return self._spot
+
+    @spot.setter
+    def spot(self, spot):
+        self._spot = spot
 
     @property
     def volatility(self) -> float:
         return self._volatility
 
-    @volatility.setter
-    def volatility(self, volatility):
-        self._volatility = volatility
-
     @property
     def pricing_method(self) -> str:
         return self.__pricing_method
-
-    @pricing_method.setter
-    def pricing_method(self, pricing_method):
-        self.__pricing_method = pricing_method
 
     @property
     def price(self) -> float:
@@ -86,3 +94,14 @@ class VanillaOption(BlackScholes):
     def vega(self) -> float:
         if self.__pricing_method == "BS":
             return self.vega_bs
+
+    def recorder(self):
+        self.__record.loc[self.__record.shape[0]] = [self.spot, self.volatility, self.delta, self.gamma]
+
+    def setter(self, input: tuple):
+        self.spot = input[0]
+        self.volatility = input[1]
+        self.recorder()
+
+
+

@@ -24,3 +24,13 @@ print(f'Delta = {put.delta}')
 print(f'Gamma = {put.gamma}')
 print(f'Theta = {put.theta}')
 print(f'Vega = {put.vega}')
+
+print("")
+Alicia = VanillaOption(100, 100, 0.05, 0.01, 30, volatility=0.25)
+print(Alicia.record)
+print("")
+for a, b in zip([101, 102], [0.16, 0.17]):
+    Alicia.setter((a, b))
+    print(Alicia.record)
+    print("")
+

@@ -15,8 +15,8 @@ class Data:
 
     @staticmethod
     def importation():
-        df = pd.read_csv("Data/data_test.csv", index_col='Unnamed: 0')
-        df = df.rename(columns={"Close": "Spot"})
+        df = pd.read_csv("Data/data_test.csv", sep=";", index_col=0)
+        #df = df.rename(columns={"Close": "Spot"})
         return df
 
     def total(self):

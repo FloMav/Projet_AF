@@ -19,7 +19,7 @@ class Book:
             for opt in self.__opt:
                 maturity = (dt.datetime.strptime(self.__opt[opt]['Maturity'], '%Y-%m-%d %H:%M:%S') -
                             dt.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
-                maturity = int(maturity.total_seconds()/60)
+                maturity = int(maturity.total_seconds()/60) ### ATTENTION A LA FREQUENCE
                 if maturity >= 0:
                     book[date].append(BinaryOption(self.__data.loc[date, 'Spot'],
                                                    self.__opt[opt]['Strike'],
