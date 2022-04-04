@@ -124,7 +124,19 @@ class VanillaOption(BlackScholes):
             return self.vega_bs
 
     def recorder(self):
-        self.__record.loc[self.__record.shape[0]] = [self.spot, self.strike, self.rate, self.dividend, self.maturity, self.volatility, self.price, self.delta, self.gamma, self.vega, self.theta]
+        list = [self.spot,
+                self.strike,
+                self.rate,
+                self.dividend,
+                self.maturity,
+                self.volatility,
+                self.price,
+                self.delta,
+                self.gamma,
+                self.vega,
+                self.theta]
+
+        self.__record.loc[self.__record.shape[0]] = list
 
     def setter(self, input: tuple):
         self.spot = input[0]
