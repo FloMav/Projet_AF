@@ -38,7 +38,18 @@ class VanillaOption(BlackScholes):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
         self.__typ = typ
         self.__pricing_method = pricing_method
-        self.__record = pd.DataFrame(columns=['Spot', 'Strike', 'Rate', 'Dividend', 'Maturity', 'Volatility', 'Price', 'Delta', 'Gamma', 'Vega', 'Theta'])
+        self.__record = pd.DataFrame(columns=['Spot',
+                                              'Strike',
+                                              'Rate',
+                                              'Dividend',
+                                              'Maturity',
+                                              'Volatility',
+                                              'Price',
+                                              'Delta',
+                                              'Gamma',
+                                              'Vega',
+                                              'Theta',
+                                              'Rho'])
         self.recorder()
 
     @property
@@ -123,6 +134,14 @@ class VanillaOption(BlackScholes):
         if self.__pricing_method == "BS":
             return self.vega_bs
 
+    @property
+    def rho(self) -> float:
+        if self.__pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.rho_call_bs
+            if self.__typ == 'P':
+                return self.rho_put_bs
+
     def recorder(self):
         list = [self.spot,
                 self.strike,
@@ -134,7 +153,8 @@ class VanillaOption(BlackScholes):
                 self.delta,
                 self.gamma,
                 self.vega,
-                self.theta]
+                self.theta,
+                self.rho]
 
         self.__record.loc[self.__record.shape[0]] = list
 

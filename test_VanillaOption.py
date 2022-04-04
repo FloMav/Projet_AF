@@ -30,7 +30,7 @@ print(f'Vega = {put.vega}')
 pd.set_option('display.max_columns', None) #print all columns
 
 print("")
-Alicia = VanillaOption(100, 100, 0.05, 0.01, 30, volatility=0.25)
+Alicia = VanillaOption(100, 100, 0.05, 0.00, 30, volatility=0.25, typ='P')
 print(Alicia.record)
 print("")
 for a, b, c , d, e in zip([101, 102], [0.1, 0.15], [0.05, 0.1], [35, 40], [0.16, 0.17]):

@@ -213,6 +213,32 @@ class BlackScholes:
         d_n_d1 = self.d_n_d1
         return (np.exp(-q * t / b) * s * np.sqrt(t / b) * d_n_d1) / 100
 
+    @property
+    def rho_call_bs(self) -> float:
+        """
+        :return: the rho of a call with the BS model
+        """
+
+        t = self._maturity
+        k = self.__strike
+        r = self._rate
+        b = self.__annual_basis
+        n_d2 = self.n_d2
+        return ((t / b) * k * np.exp(-r * t / b) * n_d2) / 100
+
+    @property
+    def rho_put_bs(self) -> float:
+        """
+        :return: the rho of a put with the BS model
+        """
+
+        t = self._maturity
+        k = self.__strike
+        r = self._rate
+        b = self.__annual_basis
+        n_d2 = self.n_d2
+        return ((t / b) * k * np.exp(-r * t / b) * n_d2 - (t / b) * k * np.exp(-r * t / b)) / 100
+
     ##################################################### BINARY #######################################################
     def price_call_digital_bs(self, payoff) -> float:
         """
