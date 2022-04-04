@@ -1,6 +1,6 @@
 from VanillaOption import VanillaOption
 from BlackScholes import BlackScholes
-
+import pandas as pd
 
 class BinaryOption(BlackScholes):
     def __init__(self,
@@ -22,10 +22,48 @@ class BinaryOption(BlackScholes):
         self.__pricing_method = pricing_method
         self.__typ = typ
         self.__rep = rep
+        self.__record = pd.DataFrame(columns=['Spot', 'Strike', 'Rate', 'Dividend', 'Maturity', 'Volatility', 'Price_digital', 'Price_spread', 'Delta_digital', 'Delta_spread', 'Delta_max'])
+        self.recorder()
+
+    @property
+    def record(self):
+        return self.__record
 
     @property
     def typ(self) -> str:
         return self.__typ
+
+    @property
+    def spot(self) -> float:
+        return self._spot
+
+    @spot.setter
+    def spot(self, spot):
+        self._spot = spot
+
+    @property
+    def rate(self) -> float:
+        return self._rate
+
+    @rate.setter
+    def rate(self, rate):
+        self._rate = rate
+
+    @property
+    def dividend(self) -> float:
+        return self._dividend
+
+    @dividend.setter
+    def dividend(self, dividend):
+        self._dividend = dividend
+
+    @property
+    def maturity(self) -> float:
+        return self._maturity
+
+    @maturity.setter
+    def maturity(self, maturity):
+        self._maturity = maturity
 
     @property
     def volatility(self) -> float:
@@ -72,7 +110,7 @@ class BinaryOption(BlackScholes):
                 return self.price_put_digital_bs(self.payoff)
 
     @property
-    def delta_th(self) -> float:
+    def delta_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.delta_digital_call_bs
@@ -88,7 +126,7 @@ class BinaryOption(BlackScholes):
                 return (self.rep_option_km('Bear').price - self.rep_option_k().price) * self.delta_max
 
     @property
-    def delta_rp(self) -> float:
+    def delta_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return 0.01
@@ -116,7 +154,28 @@ class BinaryOption(BlackScholes):
                              self.__rep,
                              self.volatility)
 
+    def recorder(self):
+        list = [self.spot,
+                self.strike,
+                self.rate,
+                self.dividend,
+                self.maturity,
+                self.volatility,
+                self.price_digital,
+                self.price_spread,
+                self.delta_digital,
+                self.delta_spread,
+                self.delta_max]
 
+        self.__record.loc[self.__record.shape[0]] = list
+
+    def setter(self, input: tuple):
+        self.spot = input[0]
+        self.rate = input[1]
+        self.dividend = input[2]
+        self.maturity = input[3]
+        self.volatility = input[4]
+        self.recorder()
 
 
 

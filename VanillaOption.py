@@ -38,7 +38,7 @@ class VanillaOption(BlackScholes):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
         self.__typ = typ
         self.__pricing_method = pricing_method
-        self.__record = pd.DataFrame(columns=['Spot', 'Volatility', 'Delta', 'Gamma'])
+        self.__record = pd.DataFrame(columns=['Spot', 'Strike', 'Rate', 'Dividend', 'Maturity', 'Volatility', 'Price', 'Delta', 'Gamma', 'Vega', 'Theta'])
         self.recorder()
 
     @property
@@ -54,8 +54,36 @@ class VanillaOption(BlackScholes):
         self._spot = spot
 
     @property
+    def rate(self) -> float:
+        return self._rate
+
+    @rate.setter
+    def rate(self, rate):
+        self._rate = rate
+
+    @property
+    def dividend(self) -> float:
+        return self._dividend
+
+    @dividend.setter
+    def dividend(self, dividend):
+        self._dividend = dividend
+
+    @property
+    def maturity(self) -> float:
+        return self._maturity
+
+    @maturity.setter
+    def maturity(self, maturity):
+        self._maturity = maturity
+
+    @property
     def volatility(self) -> float:
         return self._volatility
+
+    @volatility.setter
+    def volatility(self, volatility):
+        self._volatility = volatility
 
     @property
     def pricing_method(self) -> str:
@@ -96,12 +124,14 @@ class VanillaOption(BlackScholes):
             return self.vega_bs
 
     def recorder(self):
-        self.__record.loc[self.__record.shape[0]] = [self.spot, self.volatility, self.delta, self.gamma]
+        self.__record.loc[self.__record.shape[0]] = [self.spot, self.strike, self.rate, self.dividend, self.maturity, self.volatility, self.price, self.delta, self.gamma, self.vega, self.theta]
 
     def setter(self, input: tuple):
         self.spot = input[0]
-        self.volatility = input[1]
+        self.rate = input[1]
+        self.dividend = input[2]
+        self.maturity = input[3]
+        self.volatility = input[4]
         self.recorder()
-
 
 
