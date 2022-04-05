@@ -273,3 +273,17 @@ class BlackScholes:
         d_n_d2 = self.d_n_d2
         return (np.exp(-r * t / b) * d_n_d2)/(sig * s * np.sqrt(t / b)) #ATTENTION correction skew*vega
 
+    @property
+    def gamma_digital_call_bs(self) -> float:
+        """
+        :return: the delta of a digital call with the BS model
+        """
+        s = self.spot
+        r = self.rate
+        t = self.maturity
+        sig = self._volatility
+        b = self.annual_basis
+        d1 =  self.d1
+        d_n_d2 = self.d_n_d2
+        return (np.exp(-r * t / b) * d_n_d2)/(sig * s * np.sqrt(t / b)) #ATTENTION correction skew*vega
+
