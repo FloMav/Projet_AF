@@ -19,17 +19,17 @@ class BlackScholes:
         :param maturity: maturity in days
         :param volatility: volatility 0.16 corresponds to 16%
         """
-        self.__spot = spot
+        self._spot = spot
         self.__strike = strike
-        self.__rate = rate
-        self.__dividend = dividend
-        self.__maturity = maturity
+        self._rate = rate
+        self._dividend = dividend
+        self._maturity = maturity
         self._volatility = volatility
         self.__annual_basis = annual_basis
 
     @property
     def spot(self) -> float:
-        return self.__spot
+        return self._spot
 
     @property
     def strike(self) -> float:
@@ -37,15 +37,15 @@ class BlackScholes:
 
     @property
     def rate(self) -> float:
-        return self.__rate
+        return self._rate
 
     @property
     def dividend(self) -> float:
-        return self.__dividend
+        return self._dividend
 
     @property
     def maturity(self) -> int:
-        return self.__maturity
+        return self._maturity
 
     @property
     def volatility(self) -> float:
@@ -60,12 +60,12 @@ class BlackScholes:
         """
         :return: the d1 of the BS model
         """
-        s = self.__spot
+        s = self._spot
         k = self.__strike
-        r = self.__rate
-        q = self.__dividend
+        r = self._rate
+        q = self._dividend
         sig = self._volatility
-        t = self.__maturity
+        t = self._maturity
         b = self.__annual_basis
         return (np.log(s / k) + (r - q + 0.5 * (sig ** 2)) * t / b) / (sig * np.sqrt(t / b))
 
@@ -74,12 +74,12 @@ class BlackScholes:
         """
         :return: the d2 of the BS model
         """
-        s = self.__spot
+        s = self._spot
         k = self.__strike
-        r = self.__rate
-        q = self.__dividend
+        r = self._rate
+        q = self._dividend
         sig = self._volatility
-        t = self.__maturity
+        t = self._maturity
         b = self.__annual_basis
         return (np.log(s / k) + (r - q - 0.5 * (sig ** 2)) * t / b) / (sig * np.sqrt(t / b))
 
@@ -105,11 +105,11 @@ class BlackScholes:
         """
         :return: the price of a call with the BS model
         """
-        s = self.__spot
+        s = self._spot
         k = self.__strike
-        r = self.__rate
-        q = self.__dividend
-        t = self.__maturity
+        r = self._rate
+        q = self._dividend
+        t = self._maturity
         b = self.__annual_basis
         n_d1 = self.n_d1
         n_d2 = self.n_d2
@@ -120,11 +120,11 @@ class BlackScholes:
         """
         :return: the price of a put with the BS model
         """
-        s = self.__spot
+        s = self._spot
         k = self.__strike
-        r = self.__rate
-        q = self.__dividend
-        t = self.__maturity
+        r = self._rate
+        q = self._dividend
+        t = self._maturity
         b = self.__annual_basis
         n_md1 = 1 - self.n_d1
         n_md2 = 1 - self.n_d2
@@ -135,8 +135,8 @@ class BlackScholes:
         """
         :return: the delta of a call with the BS model
         """
-        q = self.__dividend
-        t = self.__maturity
+        q = self._dividend
+        t = self._maturity
         b = self.__annual_basis
         n_d1 = self.n_d1
         return np.exp(-q * t / b) * n_d1
@@ -146,8 +146,8 @@ class BlackScholes:
         """
         :return: the delta of a put with the BS model
         """
-        q = self.__dividend
-        t = self.__maturity
+        q = self._dividend
+        t = self._maturity
         b = self.__annual_basis
         n_d1 = self.n_d1
         return np.exp(-q * t / b) * (n_d1 - 1)
@@ -157,12 +157,12 @@ class BlackScholes:
         """
         :return: the theta of a call with the BS model
         """
-        s = self.__spot
+        s = self._spot
         k = self.__strike
-        r = self.__rate
-        q = self.__dividend
+        r = self._rate
+        q = self._dividend
         sig = self._volatility
-        t = self.__maturity
+        t = self._maturity
         b = self.__annual_basis
         n_d1 = self.n_d1
         n_d2 = self.n_d2
@@ -175,12 +175,12 @@ class BlackScholes:
         """
         :return: the theta of a put with the BS model
         """
-        s = self.__spot
+        s = self._spot
         k = self.__strike
-        r = self.__rate
-        q = self.__dividend
+        r = self._rate
+        q = self._dividend
         sig = self._volatility
-        t = self.__maturity
+        t = self._maturity
         b = self.__annual_basis
         n_md1 = 1 - self.n_d1
         n_md2 = 1 - self.n_d1
@@ -193,10 +193,10 @@ class BlackScholes:
         """
         :return: the gamma with the BS model
         """
-        s = self.__spot
-        q = self.__dividend
+        s = self._spot
+        q = self._dividend
         sig = self._volatility
-        t = self.__maturity
+        t = self._maturity
         b = self.__annual_basis
         d_n_d1 = self.d_n_d1
         return (np.exp(-q * t / b) / (s * sig * np.sqrt(t / b))) * d_n_d1
@@ -206,12 +206,36 @@ class BlackScholes:
         """
         :return: the vega with the BS model
         """
-        s = self.__spot
-        q = self.__dividend
-        t = self.__maturity
+        s = self._spot
+        q = self._dividend
+        t = self._maturity
         b = self.__annual_basis
         d_n_d1 = self.d_n_d1
         return (np.exp(-q * t / b) * s * np.sqrt(t / b) * d_n_d1) / 100
+
+    @property
+    def rho_call_bs(self) -> float:
+        """
+        :return: the rho of a call with the BS model
+        """
+        t = self._maturity
+        k = self.__strike
+        r = self._rate
+        b = self.__annual_basis
+        n_d2 = self.n_d2
+        return ((t / b) * k * np.exp(-r * t / b) * n_d2) / 100
+
+    @property
+    def rho_put_bs(self) -> float:
+        """
+        :return: the rho of a put with the BS model
+        """
+        t = self._maturity
+        k = self.__strike
+        r = self._rate
+        b = self.__annual_basis
+        n_d2 = self.n_d2
+        return ((t / b) * k * np.exp(-r * t / b) * n_d2 - (t / b) * k * np.exp(-r * t / b)) / 100
 
     ##################################################### BINARY #######################################################
     def price_call_digital_bs(self, payoff) -> float:
@@ -230,8 +254,8 @@ class BlackScholes:
         :return: the price of a digital put with the BS model (Bear digital)
         """
         p = payoff
-        r = self.__rate
-        t = self.__maturity
+        r = self._rate
+        t = self._maturity
         b = self.__annual_basis
         n_md2 = 1 - self.n_d2
         return p * np.exp(-r * t / b) * n_md2 #ATTENTION correction skew*vega
@@ -248,4 +272,69 @@ class BlackScholes:
         b = self.annual_basis
         d_n_d2 = self.d_n_d2
         return (np.exp(-r * t / b) * d_n_d2)/(sig * s * np.sqrt(t / b)) #ATTENTION correction skew*vega
+
+    @property
+    def gamma_digital_call_bs(self) -> float:
+        """
+        :return: the delta of a digital call with the BS model
+        """
+        s = self.spot
+        r = self.rate
+        t = self.maturity
+        sig = self._volatility
+        b = self.annual_basis
+        d1 = self.d1
+        d_n_d2 = self.d_n_d2
+        return (- np.exp(-r * t / b) * d1 * d_n_d2)/ ( (sig * s * np.sqrt(t / b)) ** 2 ) #ATTENTION correction skew*vega
+
+    @property
+    def vega_digital_call_bs(self) -> float:
+        """
+        :return: the delta of a digital call with the BS model
+        """
+        s = self.spot
+        k = self.__strike
+        r = self.rate
+        t = self.maturity
+        sig = self._volatility
+        b = self.annual_basis
+        d_n_d2 = self.d_n_d2
+        q = self._dividend
+        return ( np.exp(-r * t / b) * d_n_d2) * (( - np.log(s / k) / (sig**2) * np.sqrt(t/b) ) - 0.5 * np.sqrt(t/b) - (r / (sig**2) * np.sqrt(t/b)) + q / (sig**2) * np.sqrt (t/b)) #ATTENTION correction skew*vega
+
+    @property
+    def theta_digital_call_bs(self) -> float:  ######ATTENTION A VERIFIER
+        """
+        :return: the delta of a digital call with the BS model
+        """
+        s = self.spot
+        k = self.__strike
+        r = self.rate
+        t = self.maturity
+        sig = self._volatility
+        b = self.annual_basis
+        n_d2 = self.n_d2
+        d_n_d2 = self.d_n_d2
+        q = self._dividend
+        return ( (r * np.exp(-r * t / b) * n_d2)
+                 + (np.exp(-r * t / b) * d_n_d2) *
+                 (
+                (0.5 * np.log(s/k) * (sig**(-1)) * (t/b)**(-3/2))
+                + ( -0.5 * (r - q - 0.5 * (sig**2)) * (sig**(-1)) * ((t/b)**(-1/2)) )
+                 )
+                 )  # ATTENTION correction skew*vega
+        #return (np.exp(-r * t / b) * (d_n_d2 * (0.5 * (t/b)**(-1)) * ((sig**(-1)) * (t/b)**(-1/2)) * (np.log(s/k) - (r-q-0.5 * (sig**(2))) * (t/b)) + r * n_d2 ) )
+
+    @property
+    def rho_digital_call_bs(self) -> float:
+        """
+        :return: the delta of a digital call with the BS model
+        """
+        r = self.rate
+        t = self.maturity
+        sig = self._volatility
+        b = self.annual_basis
+        n_d2 = self.n_d2
+        d_n_d2 = self.d_n_d2
+        return  (- (t/b) * np.exp(-r * t / b) * n_d2 + np.exp(-r * t / b) * d_n_d2 * (np.sqrt(t/b) / sig)) #ATTENTION correction skew*vega
 

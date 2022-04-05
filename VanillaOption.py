@@ -1,3 +1,5 @@
+import pandas as pd
+
 from BlackScholes import BlackScholes
 
 
@@ -36,6 +38,55 @@ class VanillaOption(BlackScholes):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
         self.__typ = typ
         self.__pricing_method = pricing_method
+        self.__record = pd.DataFrame(columns=['Spot',
+                                              'Strike',
+                                              'Rate',
+                                              'Dividend',
+                                              'Maturity',
+                                              'Volatility',
+                                              'Price',
+                                              'Delta',
+                                              'Gamma',
+                                              'Vega',
+                                              'Theta',
+                                              'Rho'])
+        self.recorder()
+
+    @property
+    def record(self):
+        return self.__record
+
+    @property
+    def spot(self) -> float:
+        return self._spot
+
+    @spot.setter
+    def spot(self, spot):
+        self._spot = spot
+
+    @property
+    def rate(self) -> float:
+        return self._rate
+
+    @rate.setter
+    def rate(self, rate):
+        self._rate = rate
+
+    @property
+    def dividend(self) -> float:
+        return self._dividend
+
+    @dividend.setter
+    def dividend(self, dividend):
+        self._dividend = dividend
+
+    @property
+    def maturity(self) -> int:
+        return self._maturity
+
+    @maturity.setter
+    def maturity(self, maturity):
+        self._maturity = maturity
 
     @property
     def volatility(self) -> float:
@@ -48,10 +99,6 @@ class VanillaOption(BlackScholes):
     @property
     def pricing_method(self) -> str:
         return self.__pricing_method
-
-    @pricing_method.setter
-    def pricing_method(self, pricing_method):
-        self.__pricing_method = pricing_method
 
     @property
     def price(self) -> float:
@@ -86,3 +133,36 @@ class VanillaOption(BlackScholes):
     def vega(self) -> float:
         if self.__pricing_method == "BS":
             return self.vega_bs
+
+    @property
+    def rho(self) -> float:
+        if self.__pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.rho_call_bs
+            if self.__typ == 'P':
+                return self.rho_put_bs
+
+    def recorder(self):
+        li = [self.spot,
+              self.strike,
+              self.rate,
+              self.dividend,
+              self.maturity,
+              self.volatility,
+              self.price,
+              self.delta,
+              self.gamma,
+              self.vega,
+              self.theta,
+              self.rho]
+
+        self.__record.loc[self.__record.shape[0]] = li
+
+    def setter(self, inp: tuple):
+        self.spot = inp[0]
+        self.rate = inp[1]
+        self.dividend = inp[2]
+        self.maturity = inp[3]
+        self.volatility = inp[4]
+        self.recorder()
+
