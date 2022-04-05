@@ -10,9 +10,13 @@ print(f'Price_digital_call = {digital_call_repC.price_digital}')
 print(f'delta_digital_call = {digital_call_repC.delta_digital}')
 print(f'Price_bull_spread_call = {digital_call_repC.price_spread}')
 print(f'delta_spread_call = {digital_call_repC.delta_spread}')
+print(f'gamma_digital_call = {digital_call_repC.gamma_digital}')
 print(f'gamma_spread_call = {digital_call_repC.gamma_spread}')
+print(f'vega_digital_call = {digital_call_repC.vega_digital}')
 print(f'vega_spread_call = {digital_call_repC.vega_spread}')
+print(f'theta_digital_call = {digital_call_repC.theta_digital}')
 print(f'theta_spread_call = {digital_call_repC.theta_spread}')
+print(f'rho_digital_call = {digital_call_repC.rho_digital}')
 print(f'rho_spread_call = {digital_call_repC.rho_spread}')
 
 # Test digital put

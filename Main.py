@@ -4,6 +4,11 @@ from Book import Book
 
 data = Data().imported_data
 
+
+
+###########ATTENTION theta_digital à verfier dans B&S
+
+
 opt = dict()
 #Options(Type, Position, Nominal, Strike, Maturity(minuts))
 opt[1] = {'Type': 'C', 'Position': 'Long', 'Payoff': 10000, 'Strike': 30000, 'Maturity': 3}

@@ -34,9 +34,13 @@ class BinaryOption(BlackScholes):
                                               'Delta_digital',
                                               'Delta_spread',
                                               'Delta_max',
+                                              'Gamma_digital',
                                               'Gamma_spread',
+                                              'Vega_digital',
                                               'Vega_spread',
+                                              'Theta_digital',
                                               'Theta_spread',
+                                              'Rho_digital',
                                               'Rho_spread'])
         self.recorder()
 
@@ -152,12 +156,24 @@ class BinaryOption(BlackScholes):
                 return (self.rep_option_km('Bear').delta - self.rep_option_k().delta) * self.delta_max
 
     @property
+    def gamma_digital(self) -> float:
+        if self.pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.gamma_digital_call_bs
+
+    @property
     def gamma_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return (self.rep_option_km('Bull').gamma - self.rep_option_k().gamma) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').gamma - self.rep_option_k().gamma) * self.delta_max
+
+    @property
+    def vega_digital(self) -> float:
+        if self.pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.vega_digital_call_bs
 
     @property
     def vega_spread(self) -> float:
@@ -168,12 +184,24 @@ class BinaryOption(BlackScholes):
                 return (self.rep_option_km('Bear').vega - self.rep_option_k().vega) * self.delta_max
 
     @property
+    def theta_digital(self) -> float:
+        if self.pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.theta_digital_call_bs
+
+    @property
     def theta_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return (self.rep_option_km('Bull').theta - self.rep_option_k().theta) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').theta - self.rep_option_k().theta) * self.delta_max
+
+    @property
+    def rho_digital(self) -> float:
+        if self.pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.rho_digital_call_bs
 
     @property
     def rho_spread(self) -> float:
@@ -220,9 +248,13 @@ class BinaryOption(BlackScholes):
                 self.delta_digital,
                 self.delta_spread,
                 self.delta_max,
+                self.gamma_digital,
                 self.gamma_spread,
+                self.vega_digital,
                 self.vega_spread,
+                self.theta_digital,
                 self.theta_spread,
+                self.rho_digital,
                 self.rho_spread]
 
         self.__record.loc[self.__record.shape[0]] = li

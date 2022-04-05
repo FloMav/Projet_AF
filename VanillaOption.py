@@ -81,7 +81,7 @@ class VanillaOption(BlackScholes):
         self._dividend = dividend
 
     @property
-    def maturity(self) -> float:
+    def maturity(self) -> int:
         return self._maturity
 
     @maturity.setter
