@@ -218,7 +218,6 @@ class BlackScholes:
         """
         :return: the rho of a call with the BS model
         """
-
         t = self._maturity
         k = self.__strike
         r = self._rate
@@ -231,7 +230,6 @@ class BlackScholes:
         """
         :return: the rho of a put with the BS model
         """
-
         t = self._maturity
         k = self.__strike
         r = self._rate

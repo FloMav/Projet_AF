@@ -15,7 +15,7 @@ class Data:
 
     @staticmethod
     def importation():
-        df = pd.read_csv("Data/data_test.csv", sep=";", index_col=0)
+        df = pd.read_csv("Data/data_test_1.csv", sep=";", index_col=0)
         #df = df.rename(columns={"Close": "Spot"})
         return df
 

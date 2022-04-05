@@ -2,6 +2,7 @@ from VanillaOption import VanillaOption
 from BlackScholes import BlackScholes
 import pandas as pd
 
+
 class BinaryOption(BlackScholes):
     def __init__(self,
                  spot: float,
@@ -39,6 +40,9 @@ class BinaryOption(BlackScholes):
                                               'Rho_spread'])
         self.recorder()
 
+    def __str__(self):
+        return 'Binary Option'
+
     @property
     def record(self):
         return self.__record
@@ -72,7 +76,7 @@ class BinaryOption(BlackScholes):
         self._dividend = dividend
 
     @property
-    def maturity(self) -> float:
+    def maturity(self) -> int:
         return self._maturity
 
     @maturity.setter
@@ -133,8 +137,8 @@ class BinaryOption(BlackScholes):
     def price_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C': #Bull Spread
-                print(f'HERE km: {self.rep_option_km("Bull").price}')
-                print(f'HERE k: {self.rep_option_k().price}')
+                #print(f'HERE km: {self.rep_option_km("Bull").price}')
+                #print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').price - self.rep_option_k().price) * self.delta_max
             if self.__typ == 'P': #Bear Sprad
                 return (self.rep_option_km('Bear').price - self.rep_option_k().price) * self.delta_max
@@ -143,8 +147,6 @@ class BinaryOption(BlackScholes):
     def delta_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                print(f'HERE km: {self.rep_option_km("Bull").price}')
-                print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').delta - self.rep_option_k().delta) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').delta - self.rep_option_k().delta) * self.delta_max
@@ -153,8 +155,6 @@ class BinaryOption(BlackScholes):
     def gamma_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                print(f'HERE km: {self.rep_option_km("Bull").price}')
-                print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').gamma - self.rep_option_k().gamma) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').gamma - self.rep_option_k().gamma) * self.delta_max
@@ -163,8 +163,6 @@ class BinaryOption(BlackScholes):
     def vega_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                print(f'HERE km: {self.rep_option_km("Bull").price}')
-                print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').vega - self.rep_option_k().vega) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').vega - self.rep_option_k().vega) * self.delta_max
@@ -173,8 +171,6 @@ class BinaryOption(BlackScholes):
     def theta_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                print(f'HERE km: {self.rep_option_km("Bull").price}')
-                print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').theta - self.rep_option_k().theta) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').theta - self.rep_option_k().theta) * self.delta_max
@@ -183,8 +179,6 @@ class BinaryOption(BlackScholes):
     def rho_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                print(f'HERE km: {self.rep_option_km("Bull").price}')
-                print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').rho - self.rep_option_k().rho) * self.delta_max
             if self.__typ == 'P':  # Bear Sprad
                 return (self.rep_option_km('Bear').rho - self.rep_option_k().rho) * self.delta_max
@@ -192,7 +186,7 @@ class BinaryOption(BlackScholes):
 
 
     ############################################### REPLICATION
-    def rep_option_k(self):
+    def rep_option_k(self) -> VanillaOption:
         return VanillaOption(self.spot,
                              self.strike,
                              self.rate,
@@ -215,7 +209,7 @@ class BinaryOption(BlackScholes):
                              self.volatility)
 
     def recorder(self):
-        list = [self.spot,
+        li = [self.spot,
                 self.strike,
                 self.rate,
                 self.dividend,
@@ -229,17 +223,15 @@ class BinaryOption(BlackScholes):
                 self.gamma_spread,
                 self.vega_spread,
                 self.theta_spread,
-                self.rho_spread,]
+                self.rho_spread]
 
-        self.__record.loc[self.__record.shape[0]] = list
+        self.__record.loc[self.__record.shape[0]] = li
 
-    def setter(self, input: tuple):
-        self.spot = input[0]
-        self.rate = input[1]
-        self.dividend = input[2]
-        self.maturity = input[3]
-        self.volatility = input[4]
+    def setter(self, inp: tuple):
+        self.spot = inp[0]
+        self.rate = inp[1]
+        self.dividend = inp[2]
+        self.volatility = inp[3]
+        self.maturity = inp[4]
         self.recorder()
-
-
 

@@ -18,7 +18,7 @@ print(f'Gamma = {put.gamma}')
 print(f'Theta = {put.theta}')
 print(f'Vega = {put.vega}')
 
-#put.volatility = 0.16
+put.volatility = 0.16
 print("\n### Test Put new vol")
 print(f'Volatility = {put.volatility}')
 print(f'Price = {put.price}')

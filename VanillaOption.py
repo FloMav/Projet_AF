@@ -143,27 +143,26 @@ class VanillaOption(BlackScholes):
                 return self.rho_put_bs
 
     def recorder(self):
-        list = [self.spot,
-                self.strike,
-                self.rate,
-                self.dividend,
-                self.maturity,
-                self.volatility,
-                self.price,
-                self.delta,
-                self.gamma,
-                self.vega,
-                self.theta,
-                self.rho]
+        li = [self.spot,
+              self.strike,
+              self.rate,
+              self.dividend,
+              self.maturity,
+              self.volatility,
+              self.price,
+              self.delta,
+              self.gamma,
+              self.vega,
+              self.theta,
+              self.rho]
 
-        self.__record.loc[self.__record.shape[0]] = list
+        self.__record.loc[self.__record.shape[0]] = li
 
-    def setter(self, input: tuple):
-        self.spot = input[0]
-        self.rate = input[1]
-        self.dividend = input[2]
-        self.maturity = input[3]
-        self.volatility = input[4]
+    def setter(self, inp: tuple):
+        self.spot = inp[0]
+        self.rate = inp[1]
+        self.dividend = inp[2]
+        self.maturity = inp[3]
+        self.volatility = inp[4]
         self.recorder()
-
 
