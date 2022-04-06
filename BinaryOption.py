@@ -136,6 +136,8 @@ class BinaryOption(BlackScholes):
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.delta_digital_call_bs
+            if self.__typ == 'P':
+                return self.delta_digital_put_bs
 
     @property
     def price_spread(self) -> float:
@@ -160,6 +162,8 @@ class BinaryOption(BlackScholes):
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.gamma_digital_call_bs
+            if self.__typ == 'P':
+                return self.gamma_digital_put_bs
 
     @property
     def gamma_spread(self) -> float:
@@ -174,6 +178,8 @@ class BinaryOption(BlackScholes):
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.vega_digital_call_bs
+            if self.__typ == 'P':
+                return self.vega_digital_put_bs
 
     @property
     def vega_spread(self) -> float:
@@ -188,6 +194,8 @@ class BinaryOption(BlackScholes):
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.theta_digital_call_bs
+            if self.__typ == 'P':
+                return self.theta_digital_put_bs
 
     @property
     def theta_spread(self) -> float:
@@ -202,6 +210,8 @@ class BinaryOption(BlackScholes):
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.rho_digital_call_bs
+            if self.__typ == 'P':
+                return self.rho_digital_put_bs
 
     @property
     def rho_spread(self) -> float:

@@ -2,7 +2,7 @@ from BinaryOption import BinaryOption
 import pandas as pd
 
 # Test digital call
-digital_call_repC = BinaryOption(100, 100, 0.05, 0.01, 30, delta_max=1, volatility=0.25, payoff=1,  typ='C', rep='C')
+digital_call_repC = BinaryOption(100, 100, 0, 0.04, 30, delta_max=1, volatility=0.25, payoff=1,  typ='C', rep='C')
 print("### Test digital call")
 print(f'Payoff = {digital_call_repC.payoff}')
 print(f'Delta_max = {digital_call_repC.delta_max}')
@@ -18,6 +18,19 @@ print(f'theta_digital_call = {digital_call_repC.theta_digital}')
 print(f'theta_spread_call = {digital_call_repC.theta_spread}')
 print(f'rho_digital_call = {digital_call_repC.rho_digital}')
 print(f'rho_spread_call = {digital_call_repC.rho_spread}')
+
+
+digital_put_repC = BinaryOption(100, 100, 0, 0.04, 30, delta_max=1, volatility=0.25, payoff=1,  typ='P', rep='C')
+
+print(f'Price_digital_put = {digital_put_repC.price_digital}')
+print(f'delta_digital_put = {digital_put_repC.delta_digital}')
+print(f'gamma_digital_put = {digital_put_repC.gamma_digital}')
+print(f'vega_digital_put = {digital_put_repC.vega_digital}')
+print(f'theta_digital_put = {digital_put_repC.theta_digital}')
+print(f'rho_digital_put = {digital_put_repC.rho_digital}')
+
+
+
 
 # Test digital put
 digital_call_repP = BinaryOption(100, 100, 0.05, 0.01, 30, delta_max=1, volatility=0.25, payoff=1, typ='C', rep='P')
