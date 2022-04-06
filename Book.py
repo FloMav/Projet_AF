@@ -33,7 +33,7 @@ class Book:
         self.__book: dict = dico
 
     @property
-    def book_objets(self) -> dict[int]:
+    def book_objets(self) -> dict[str]:
         return self.__book
 
     @property
@@ -110,55 +110,55 @@ class Book:
             dico[date] = df
         return dico
 
-    @property
-    def book_track(self): # Df qui montre l'evolution du book sur chaque periode index = date
-        df = pd.DataFrame(columns=['Value',
-                                  #'Delta',
-                                  #'Gamma',
-                                  #'Vega',
-                                  #'Theta',
-                                  #'Rho',
-                                    #'Spot',
-                                    #'Rate',
-                                    #'Dividend'])
-        #for opt in self.__opt:
-
-        und_digital =
-            und_spread =
-
-            digital_portfolio_delta_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
-            spread_portfolio_delta_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
-            digital_portfolio_gamma_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
-            spread_portfolio_gamma_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
-            digital_portfolio_vega_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
-            spread_portfolio_vega_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
-            digital_portfolio_theta_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
-            spread_portfolio_theta_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
-            digital_portfolio_rho_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
-            spread_portfolio_rho_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
-
-            df.loc["Hedging"] = ["Cash",
-                                    df['Spot'].iloc[0],
-                                    " ",  #Strike
-                                    df['Rate'].iloc[0],  #Rate
-                                    " ",  #Dividend
-                                    " ",  #Maturity
-                                    " ",  #Volatility
-                                   und_digital,
-                                   " ",
-                                   und_spread,
-                                   " ",
-                                   -digital_portfolio_delta,
-                                   -spread_portfolio_delta,
-                                   digital_portfolio_gamma,
-                                   spread_portfolio_gamma,
-                                   digital_portfolio_vega,
-                                   spread_portfolio_vega,
-                                   digital_portfolio_theta,
-                                   spread_portfolio_theta,
-                                   digital_portfolio_rho,
-                                   spread_portfolio_rho,
-                                   ]
+    # @property
+    # def book_track(self): # Df qui montre l'evolution du book sur chaque periode index = date
+    #     df = pd.DataFrame(columns=['Value',
+    #                               #'Delta',
+    #                               #'Gamma',
+    #                               #'Vega',
+    #                               #'Theta',
+    #                               #'Rho',
+    #                                 #'Spot',
+    #                                 #'Rate',
+    #                                 #'Dividend'])
+    #     #for opt in self.__opt:
+    #
+    #     und_digital =
+    #         und_spread =
+    #
+    #         digital_portfolio_delta_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
+    #         spread_portfolio_delta_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
+    #         digital_portfolio_gamma_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
+    #         spread_portfolio_gamma_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
+    #         digital_portfolio_vega_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
+    #         spread_portfolio_vega_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
+    #         digital_portfolio_theta_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
+    #         spread_portfolio_theta_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
+    #         digital_portfolio_rho_und = digital_portfolio_delta * digtal_portfolio_value / (digtal_portfolio_value + und_digital)
+    #         spread_portfolio_rho_und = spread_portfolio_delta * spread_portfolio_value / (spread_portfolio_value + und_spread)
+    #
+    #         df.loc["Hedging"] = ["Cash",
+    #                                 df['Spot'].iloc[0],
+    #                                 " ",  #Strike
+    #                                 df['Rate'].iloc[0],  #Rate
+    #                                 " ",  #Dividend
+    #                                 " ",  #Maturity
+    #                                 " ",  #Volatility
+    #                                und_digital,
+    #                                " ",
+    #                                und_spread,
+    #                                " ",
+    #                                -digital_portfolio_delta,
+    #                                -spread_portfolio_delta,
+    #                                digital_portfolio_gamma,
+    #                                spread_portfolio_gamma,
+    #                                digital_portfolio_vega,
+    #                                spread_portfolio_vega,
+    #                                digital_portfolio_theta,
+    #                                spread_portfolio_theta,
+    #                                digital_portfolio_rho,
+    #                                spread_portfolio_rho,
+    #                                ]
 
     def backtest(self) -> None: # ATTENTION A NE PAS LE RUN 2 TIMES IN A ROW
         for opt in self.__opt:
