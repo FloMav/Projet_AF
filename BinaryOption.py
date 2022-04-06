@@ -132,16 +132,6 @@ class BinaryOption(BlackScholes):
                 return self.price_put_digital_bs(self.payoff)
 
     @property
-    def delta_digital(self) -> float:
-        if self.pricing_method == "BS":
-            if self.__typ == 'C':
-                return self.delta_digital_call_bs(self.payoff) * self.spot / (self.price_digital * 100)
-            if self.__typ == 'P':
-                return self.delta_digital_put_bs(self.payoff) * self.spot / (self.price_digital * 100)
-            if self.__typ == 'P':
-                return self.delta_digital_put_bs(self.payoff)
-
-    @property
     def price_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C': #Bull Spread
@@ -150,6 +140,16 @@ class BinaryOption(BlackScholes):
                 return (self.rep_option_km('Bull').price - self.rep_option_k().price) * self.delta_max
             if self.__typ == 'P': #Bear Spread
                 return (self.rep_option_km('Bear').price - self.rep_option_k().price) * self.delta_max
+
+    @property
+    def delta_digital(self) -> float:
+        if self.pricing_method == "BS":
+            if self.__typ == 'C':
+                return self.delta_digital_call_bs(self.payoff) * self.spot / (self.price_digital * 100)
+            if self.__typ == 'P':
+                return self.delta_digital_put_bs(self.payoff) * self.spot / (self.price_digital * 100)
+            if self.__typ == 'P':
+                return self.delta_digital_put_bs(self.payoff)
 
     @property
     def delta_spread(self) -> float:
@@ -165,10 +165,9 @@ class BinaryOption(BlackScholes):
     def gamma_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return self.gamma_digital_call_bs(self.payoff) * self.delta_max \
-                       * (self.spot ** 2) / (self.price_digital * 10000)
+                return self.gamma_digital_call_bs(self.payoff) * (self.spot ** 2) / (self.price_digital * 10000)
             if self.__typ == 'P':
-                return self.gamma_digital_put_bs(self.payoff)
+                return self.gamma_digital_put_bs(self.payoff) * self.delta_max * (self.spot ** 2) / (self.price_digital * 10000)
 
     @property
     def gamma_spread(self) -> float:
@@ -176,7 +175,6 @@ class BinaryOption(BlackScholes):
             if self.__typ == 'C':
                 return (self.rep_option_km('Bull').gamma - self.rep_option_k().gamma) * self.delta_max \
                        * (self.spot ** 2) / (self.price_spread * 10000)
-
             if self.__typ == 'P':  # Bear Spread
                 return (self.rep_option_km('Bear').gamma - self.rep_option_k().gamma) * self.delta_max \
                        * (self.spot ** 2) / (self.price_spread * 10000)
@@ -184,28 +182,28 @@ class BinaryOption(BlackScholes):
     def vega_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return self.vega_digital_call_bs
+                return self.vega_digital_call_bs(self.payoff) * 10000 / self.price_digital
             if self.__typ == 'P':
-                return self.vega_digital_put_bs(self.payoff)
+                return self.vega_digital_put_bs(self.payoff) * 10000 / self.price_digital
 
     @property
     def vega_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return (self.rep_option_km('Bull').vega - self.rep_option_k().vega) * self.delta_max \
-                        * 10000 /self.price_spread
+                        * 10000 / self.price_spread
 
             if self.__typ == 'P':  # Bear Spread
                 return (self.rep_option_km('Bear').vega - self.rep_option_k().vega) * self.delta_max \
                         * 10000 / self.price_spread
 
     @property
-    def theta_digital(self) -> float:
+    def theta_digital(self) -> float: #FAUX
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return self.theta_digital_call_bs
+                return self.theta_digital_call_bs(self.payoff) * 10000 / self.price_digital
             if self.__typ == 'P':
-                return self.theta_digital_put_bs
+                return self.theta_digital_put_bs(self.payoff) * 10000 / self.price_digital
 
     @property
     def theta_spread(self) -> float:
@@ -221,9 +219,9 @@ class BinaryOption(BlackScholes):
     def rho_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return self.rho_digital_call_bs
+                return self.rho_digital_call_bs(self.payoff) * 10000 / self.price_digital
             if self.__typ == 'P':
-                return self.rho_digital_put_bs(self.payoff)
+                return self.rho_digital_put_bs(self.payoff) * 10000 / self.price_digital
 
     @property
     def rho_spread(self) -> float:

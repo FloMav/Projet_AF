@@ -2,13 +2,13 @@ from BinaryOption import BinaryOption
 import pandas as pd
 
 # Test digital call
-digital_call_repC = BinaryOption(40944.839844, 45000, 0, 0.04, 4, delta_max=1000, volatility=0.7633, payoff=2000,  typ='C', rep='C')
+digital_call_repC = BinaryOption(100, 100, 0, 0.04, 4, delta_max=10000, volatility=0.7633, payoff=10,  typ='C', rep='C')
 print("### Test digital call")
 print(f'Payoff = {digital_call_repC.payoff}')
 print(f'Delta_max = {digital_call_repC.delta_max}')
 print(f'Price_digital_call = {digital_call_repC.price_digital}')
-print(f'delta_digital_call = {digital_call_repC.delta_digital}')
 print(f'Price_bull_spread_call = {digital_call_repC.price_spread}')
+print(f'delta_digital_call = {digital_call_repC.delta_digital}')
 print(f'delta_spread_call = {digital_call_repC.delta_spread}')
 print(f'gamma_digital_call = {digital_call_repC.gamma_digital}')
 print(f'gamma_spread_call = {digital_call_repC.gamma_spread}')
