@@ -24,14 +24,14 @@ book = Book(data, opt)
 pd.set_option('display.max_columns', None)
 print("###### Record\n")
 print("\n###### Option 1\n")
-print(book.book[1].record)
+print(book.book_objets[1].record)
 print("\n###### Option 2\n")
-print(book.book[2].record)
+print(book.book_objets[2].record)
 book.backtest()
 print("\n###### Option 1\n")
-print(book.book[1].record)
+print(book.book_objets[1].record)
 print("\n###### Option 2\n")
-print(book.book[2].record)
+print(book.book_objets[2].record)
 
 
 

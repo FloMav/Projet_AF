@@ -33,11 +33,11 @@ class Book:
         self.__book: dict = dico
 
     @property
-    def book_objets(self) -> dict[str]:
+    def book_objets(self) -> dict[int]:
         return self.__book
 
     @property
-    def book_positions(self) -> dict[int]: #dictionnaire de Df qui montre l'impact des options dans le book at t avec index = options, cle du dictionnaire = t
+    def book_positions(self) -> dict[str]: #dictionnaire de Df qui montre l'impact des options dans le book at t avec index = options, cle du dictionnaire = t
         dico = dict()
         for date in self.__data.index:
             df = pd.DataFrame(columns=['Typ',
