@@ -2,19 +2,30 @@ import pandas as pd
 from Data import Data
 from Book import Book
 
-#Data
 data = Data().imported_data
 
-#Options(Type, Position, Nominal, Strike, Maturity(minuts))
 opt = dict()
-opt[1] = {'Type': 'C', 'Position': 'Long', 'Payoff': 10000, 'Strike': 30000, 'Maturity': 50}
+#Options(Type, Position, Nominal, Strike, Maturity(minuts))
+opt[1] = {'Type': 'C', 'Position': 'Long', 'Payoff': 2000, 'Strike': 45000, 'Maturity': 4}
+opt[2] = {'Type': 'C', 'Position': 'Long', 'Payoff': 2000, 'Strike': 44000, 'Maturity': 4}
+
 book = Book(data, opt)
 pd.set_option('display.max_columns', None)
-print(book.book[1].record)
-print("")
-print("Back_test")
+print("###### Test Record\n")
+print("\n###### Option 1\n")
+print(book.book_objets[1].record)
+print("\n###### Option 2\n")
+print(book.book_objets[2].record)
+
 book.backtest()
-print("")
-print("")
-print("")
-print(book.book[1].record)
+print("\n###### Option 1\n")
+print(book.book_objets[1].record)
+print("\n###### Option 2\n")
+print(book.book_objets[2].record)
+
+
+print("\n\n###### Test book_position\n")
+#print(book.book_objets[1].record.loc['18/03/2022'].values)
+#print(book.book_positions.keys())
+print(book.book_positions['18/03/2022'])
+

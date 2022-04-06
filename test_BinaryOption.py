@@ -2,7 +2,7 @@ from BinaryOption import BinaryOption
 import pandas as pd
 
 # Test digital call
-digital_call_repC = BinaryOption(100, 100, 0, 0.04, 30, delta_max=1, volatility=0.25, payoff=1,  typ='C', rep='C')
+digital_call_repC = BinaryOption(40944.839844, 45000, 0, 0.04, 4, delta_max=1000, volatility=0.7633, payoff=2000,  typ='C', rep='C')
 print("### Test digital call")
 print(f'Payoff = {digital_call_repC.payoff}')
 print(f'Delta_max = {digital_call_repC.delta_max}')
@@ -18,19 +18,6 @@ print(f'theta_digital_call = {digital_call_repC.theta_digital}')
 print(f'theta_spread_call = {digital_call_repC.theta_spread}')
 print(f'rho_digital_call = {digital_call_repC.rho_digital}')
 print(f'rho_spread_call = {digital_call_repC.rho_spread}')
-
-
-digital_put_repC = BinaryOption(100, 100, 0, 0.04, 30, delta_max=1, volatility=0.25, payoff=1,  typ='P', rep='C')
-
-print(f'Price_digital_put = {digital_put_repC.price_digital}')
-print(f'delta_digital_put = {digital_put_repC.delta_digital}')
-print(f'gamma_digital_put = {digital_put_repC.gamma_digital}')
-print(f'vega_digital_put = {digital_put_repC.vega_digital}')
-print(f'theta_digital_put = {digital_put_repC.theta_digital}')
-print(f'rho_digital_put = {digital_put_repC.rho_digital}')
-
-
-
 
 # Test digital put
 digital_call_repP = BinaryOption(100, 100, 0.05, 0.01, 30, delta_max=1, volatility=0.25, payoff=1, typ='C', rep='P')
@@ -69,8 +56,9 @@ rate = [0.1, 0.15]
 dividend = [0.05, 0.1]
 maturity = [35, 40]
 volatility = [0.16, 0.17]
-for s, r, d, m, v in zip(spot, rate, dividend, maturity, volatility):
-    Alicia.setter((s, r, d, m, v))
+date = ['18/03/2022', '19/03/2022']
+for s, r, d, m, v, dd in zip(spot, rate, dividend, maturity, volatility, date):
+    Alicia.setter((s, r, d, m, v), dd)
 
 print("\n### Option's life\n")
 print(Alicia.record)

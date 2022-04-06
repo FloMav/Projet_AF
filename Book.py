@@ -33,41 +33,109 @@ class Book:
         self.__book: dict = dico
 
     @property
-    def book(self) -> dict:
+    def book_objets(self) -> dict[int]:
         return self.__book
 
-    def backtest(self) -> None:
+    @property
+    def book_positions(self) -> dict[int]: #dictionnaire de Df qui montre l'impact des options dans le book at t avec index = options, cle du dictionnaire = t
+        dico = dict()
+        for date in self.__data.index:
+            df = pd.DataFrame(columns=['Typ',
+                                        'Spot',
+                                        'Strike',
+                                        'Rate',
+                                        'Dividend',
+                                        'Maturity',
+                                        'Volatility',
+                                        'Price_digital',
+                                        'Price_spread',
+                                        'Delta_digital',
+                                        'Delta_spread',
+                                        'Gamma_digital',
+                                        'Gamma_spread',
+                                        'Vega_digital',
+                                        'Vega_spread',
+                                        'Theta_digital',
+                                        'Theta_spread',
+                                        'Rho_digital',
+                                        'Rho_spread'])
+
+            for opt in self.__opt:
+                if date in self.__book[opt].record.index:
+                    df.loc[len(df)+1] = self.__book[opt].record.loc[date].values
+                    idx = list(df.index)
+                    idx[-1] = opt
+                    df.index = idx
+            df.insert(8, 'Weight_digital', df["Price_digital"] / df["Price_digital"].sum() * 100)
+            df.insert(10, 'Weight_spread', df["Price_spread"] / df["Price_spread"].sum() * 100)
+
+            digtal_portoflio_value = df["Price_digital"].sum()
+            digtal_portoflio_weight = df["Weight_digital"].sum()
+            spread_portfolio_value = df["Price_spread"].sum()
+            spread_portfolio_weight = df["Weight_spread"].sum()
+            digital_portfolio_delta = (df["Delta_digital"] * df["Price_digital"]).sum() / digtal_portoflio_value
+            spread_portfolio_delta = (df["Delta_spread"] * df["Price_spread"]).sum() / spread_portfolio_value
+            digital_portfolio_gamma = (df["Gamma_digital"] * df["Price_digital"]).sum() / digtal_portoflio_value
+            spread_portfolio_gamma = (df["Gamma_spread"] * df["Price_spread"]).sum() / spread_portfolio_value
+            digital_portfolio_vega = (df["Vega_digital"] * df["Price_digital"]).sum() / digtal_portoflio_value
+            spread_portfolio_vega = (df["Vega_spread"] * df["Price_spread"]).sum() / spread_portfolio_value
+            digital_portfolio_theta = (df["Theta_digital"] * df["Price_digital"]).sum() / digtal_portoflio_value
+            spread_portfolio_theta = (df["Theta_spread"] * df["Price_spread"]).sum() / spread_portfolio_value
+            digital_portfolio_rho = (df["Rho_digital"] * df["Price_digital"]).sum() / digtal_portoflio_value
+            spread_portfolio_rho = (df["Rho_spread"] * df["Price_spread"]).sum() / spread_portfolio_value
+
+            df.loc["Portfolio"] = [" ",
+                                    df['Spot'].iloc[0],
+                                    " ",  #Strike
+                                    df['Rate'].iloc[0],  #Rate
+                                    df['Dividend'].iloc[0],  #Dividend
+                                    " ",  #Maturity
+                                    " ",  #Volatility
+                                   digtal_portoflio_value,
+                                   digtal_portoflio_weight,
+                                   spread_portfolio_value,
+                                   spread_portfolio_weight,
+                                   digital_portfolio_delta,
+                                   spread_portfolio_delta,
+                                   digital_portfolio_gamma,
+                                   spread_portfolio_gamma,
+                                   digital_portfolio_vega,
+                                   spread_portfolio_vega,
+                                   digital_portfolio_theta,
+                                   spread_portfolio_theta,
+                                   digital_portfolio_rho,
+                                   spread_portfolio_rho,
+                                   ]
+            #df.insert(12, 'Delta_digital_p', df["Delta_digital"] * df["Spot"] / )
+            #df.insert(14, 'Delta_spread_p', df["Delta_spread"] * df["Weight_spread"])
+
+            #df.insert(11, 'Delta_digital_p', df["Delta_digital"] * df["Weight_digital"])
+            #df.insert(13, 'Delta_spread_p', df["Delta_spread"] * df["Weight_spread"])
+
+
+
+            dico[date] = df
+        return dico
+
+    #@property
+    #def book_track(self): # Df qui montre l'evolution du book sur chaque periode index = date
+        #df = pd.DataFrame(columns=['Value',
+                                  #'Delta',
+                                  #'Gamma',
+                                  #'Vega',
+                                  #'Theta',
+                                  #'Rho',
+                                    #'Spot',
+                                    #'Rate',
+                                    #'Dividend'])
+        #for opt in self.__opt:
+
+    def backtest(self) -> None: # ATTENTION A NE PAS LE RUN 2 TIMES IN A ROW
         for opt in self.__opt:
             for date in self.__data.index[1:]:
                 tup = self.__data.loc[date, :].values.tolist()
                 tup.append(self.__opt[opt]['Maturity'])
                 tup = tuple(tup)
-                self.__book[opt].setter(tup)
+                self.__book[opt].setter(tup, date)
         print("\n\n############ Backtest done ! ############\n")
         return None
-
-
-
-
-    # def report(self):
-    #     for date in self.book:
-    #         columns = ['Type', 'Position', 'Payoff', 'Spot', 'Strike', 'Interest Rate (%)', 'Dividend Yield (%)',
-    #                        'Implied Volatility (%)', 'Maturity T (minuts)']
-    #         index = [f"Opt {i+1}" for i in range(len(self.book[date]))]
-    #         df = pd.DataFrame(columns=columns, index=index)
-    #         for i in range(len(self.book[date])):
-    #             df.loc[f"Opt {i+1}", 'Type'] = self.book[date][i].typ
-    #             df.loc[f"Opt {i + 1}", 'Position'] = 0
-    #             df.loc[f"Opt {i + 1}", 'Payoff'] = self.book[date][i].payoff
-    #             df.loc[f"Opt {i + 1}", 'Spot'] = self.book[date][i].spot
-    #             df.loc[f"Opt {i + 1}", 'Strike'] = self.book[date][i].strike
-    #             df.loc[f"Opt {i + 1}", 'Interest Rate (%)'] = self.book[date][i].rate
-    #             df.loc[f"Opt {i + 1}", 'Dividend Yield (%)'] = self.book[date][i].dividend
-    #             df.loc[f"Opt {i + 1}", 'Implied Volatility (%)'] = self.book[date][i].volatility
-    #             df.loc[f"Opt {i + 1}", 'Maturity T (minuts)'] = self.book[date][i].maturity
-    #
-    #         df.to_csv(f'Report/{date}.csv')
-    #     pass
-
-
-

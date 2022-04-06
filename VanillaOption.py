@@ -38,18 +38,19 @@ class VanillaOption(BlackScholes):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
         self.__typ = typ
         self.__pricing_method = pricing_method
-        self.__record = pd.DataFrame(columns=['Spot',
-                                              'Strike',
-                                              'Rate',
-                                              'Dividend',
-                                              'Maturity',
-                                              'Volatility',
-                                              'Price',
-                                              'Delta',
-                                              'Gamma',
-                                              'Vega',
-                                              'Theta',
-                                              'Rho'])
+        self.__record = pd.DataFrame(columns=['Typ',
+                                                'Spot',
+                                                'Strike',
+                                                'Rate',
+                                                'Dividend',
+                                                'Maturity',
+                                                'Volatility',
+                                                'Price',
+                                                'Delta',
+                                                'Gamma',
+                                                'Vega',
+                                                'Theta',
+                                                'Rho'])
         self.recorder()
 
     @property
@@ -142,27 +143,31 @@ class VanillaOption(BlackScholes):
             if self.__typ == 'P':
                 return self.rho_put_bs
 
-    def recorder(self):
-        li = [self.spot,
-              self.strike,
-              self.rate,
-              self.dividend,
-              self.maturity,
-              self.volatility,
-              self.price,
-              self.delta,
-              self.gamma,
-              self.vega,
-              self.theta,
-              self.rho]
+    def recorder(self, date: str = "18/03/2022"):
+        li = [self.__typ,
+                self.spot,
+                self.strike,
+                self.rate,
+                self.dividend,
+                self.maturity,
+                self.volatility,
+                self.price,
+                self.delta,
+                self.gamma,
+                self.vega,
+                self.theta,
+                self.rho]
 
         self.__record.loc[self.__record.shape[0]] = li
+        idx = list(self.__record.index)
+        idx[-1] = date
+        self.__record.index = idx
 
-    def setter(self, inp: tuple):
+    def setter(self, inp: tuple, date: str):
         self.spot = inp[0]
         self.rate = inp[1]
         self.dividend = inp[2]
         self.maturity = inp[3]
         self.volatility = inp[4]
-        self.recorder()
+        self.recorder(date)
 

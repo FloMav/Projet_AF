@@ -14,7 +14,7 @@ class BinaryOption(BlackScholes):
                  typ: str = 'C',
                  rep: str = 'C',
                  payoff: float = 1,
-                 delta_max: float = 1,
+                 delta_max: float = 10000,
                  pricing_method: str = 'BS',
                  annual_basis: int = 365):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
@@ -23,25 +23,25 @@ class BinaryOption(BlackScholes):
         self.__pricing_method = pricing_method
         self.__typ = typ
         self.__rep = rep
-        self.__record = pd.DataFrame(columns=['Spot',
-                                              'Strike',
-                                              'Rate',
-                                              'Dividend',
-                                              'Maturity',
-                                              'Volatility',
-                                              'Price_digital',
-                                              'Price_spread',
-                                              'Delta_digital',
-                                              'Delta_spread',
-                                              'Delta_max',
-                                              'Gamma_digital',
-                                              'Gamma_spread',
-                                              'Vega_digital',
-                                              'Vega_spread',
-                                              'Theta_digital',
-                                              'Theta_spread',
-                                              'Rho_digital',
-                                              'Rho_spread'])
+        self.__record = pd.DataFrame(columns=['Type',
+                                                'Spot',
+                                                'Strike',
+                                                'Rate',
+                                                'Dividend',
+                                                'Maturity',
+                                                'Volatility',
+                                                'Price_digital',
+                                                'Price_spread',
+                                                'Delta_digital',
+                                                'Delta_spread',
+                                                'Gamma_digital',
+                                                'Gamma_spread',
+                                                'Vega_digital',
+                                                'Vega_spread',
+                                                'Theta_digital',
+                                                'Theta_spread',
+                                                'Rho_digital',
+                                                'Rho_spread'])
         self.recorder()
 
     def __str__(self):
@@ -135,9 +135,11 @@ class BinaryOption(BlackScholes):
     def delta_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return self.delta_digital_call_bs
+                return self.delta_digital_call_bs(self.payoff) * self.spot / (self.price_digital * 100)
             if self.__typ == 'P':
-                return self.delta_digital_put_bs
+                return self.delta_digital_put_bs(self.payoff) * self.spot / (self.price_digital * 100)
+            if self.__typ == 'P':
+                return self.delta_digital_put_bs(self.payoff)
 
     @property
     def price_spread(self) -> float:
@@ -146,48 +148,56 @@ class BinaryOption(BlackScholes):
                 #print(f'HERE km: {self.rep_option_km("Bull").price}')
                 #print(f'HERE k: {self.rep_option_k().price}')
                 return (self.rep_option_km('Bull').price - self.rep_option_k().price) * self.delta_max
-            if self.__typ == 'P': #Bear Sprad
+            if self.__typ == 'P': #Bear Spread
                 return (self.rep_option_km('Bear').price - self.rep_option_k().price) * self.delta_max
 
     @property
     def delta_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return (self.rep_option_km('Bull').delta - self.rep_option_k().delta) * self.delta_max
-            if self.__typ == 'P':  # Bear Sprad
-                return (self.rep_option_km('Bear').delta - self.rep_option_k().delta) * self.delta_max
+                return (self.rep_option_km('Bull').delta - self.rep_option_k().delta) * self.delta_max * self.spot \
+                       / (self.price_spread * 100)
+            if self.__typ == 'P':  # Bear Spread
+                return (self.rep_option_km('Bear').delta - self.rep_option_k().delta) * self.delta_max * self.spot \
+                       / (self.price_spread * 100)
 
     @property
     def gamma_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return self.gamma_digital_call_bs
+                return self.gamma_digital_call_bs(self.payoff) * self.delta_max \
+                       * (self.spot ** 2) / (self.price_digital * 10000)
             if self.__typ == 'P':
-                return self.gamma_digital_put_bs
+                return self.gamma_digital_put_bs(self.payoff)
 
     @property
     def gamma_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return (self.rep_option_km('Bull').gamma - self.rep_option_k().gamma) * self.delta_max
-            if self.__typ == 'P':  # Bear Sprad
-                return (self.rep_option_km('Bear').gamma - self.rep_option_k().gamma) * self.delta_max
+                return (self.rep_option_km('Bull').gamma - self.rep_option_k().gamma) * self.delta_max \
+                       * (self.spot ** 2) / (self.price_spread * 10000)
 
+            if self.__typ == 'P':  # Bear Spread
+                return (self.rep_option_km('Bear').gamma - self.rep_option_k().gamma) * self.delta_max \
+                       * (self.spot ** 2) / (self.price_spread * 10000)
     @property
     def vega_digital(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
                 return self.vega_digital_call_bs
             if self.__typ == 'P':
-                return self.vega_digital_put_bs
+                return self.vega_digital_put_bs(self.payoff)
 
     @property
     def vega_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return (self.rep_option_km('Bull').vega - self.rep_option_k().vega) * self.delta_max
-            if self.__typ == 'P':  # Bear Sprad
-                return (self.rep_option_km('Bear').vega - self.rep_option_k().vega) * self.delta_max
+                return (self.rep_option_km('Bull').vega - self.rep_option_k().vega) * self.delta_max \
+                        * 10000 /self.price_spread
+
+            if self.__typ == 'P':  # Bear Spread
+                return (self.rep_option_km('Bear').vega - self.rep_option_k().vega) * self.delta_max \
+                        * 10000 / self.price_spread
 
     @property
     def theta_digital(self) -> float:
@@ -201,9 +211,11 @@ class BinaryOption(BlackScholes):
     def theta_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return (self.rep_option_km('Bull').theta - self.rep_option_k().theta) * self.delta_max
-            if self.__typ == 'P':  # Bear Sprad
-                return (self.rep_option_km('Bear').theta - self.rep_option_k().theta) * self.delta_max
+                return (self.rep_option_km('Bull').theta - self.rep_option_k().theta) * self.delta_max \
+                        * 10000 /self.price_spread
+            if self.__typ == 'P':  # Bear Spread
+                return (self.rep_option_km('Bear').theta - self.rep_option_k().theta) * self.delta_max \
+                        * 10000 /self.price_spread
 
     @property
     def rho_digital(self) -> float:
@@ -211,17 +223,18 @@ class BinaryOption(BlackScholes):
             if self.__typ == 'C':
                 return self.rho_digital_call_bs
             if self.__typ == 'P':
-                return self.rho_digital_put_bs
+                return self.rho_digital_put_bs(self.payoff)
 
     @property
     def rho_spread(self) -> float:
         if self.pricing_method == "BS":
             if self.__typ == 'C':
-                return (self.rep_option_km('Bull').rho - self.rep_option_k().rho) * self.delta_max
-            if self.__typ == 'P':  # Bear Sprad
-                return (self.rep_option_km('Bear').rho - self.rep_option_k().rho) * self.delta_max
+                return (self.rep_option_km('Bull').rho - self.rep_option_k().rho) * self.delta_max \
+                        * 10000 /self.price_spread
 
-
+            if self.__typ == 'P':  # Bear Spread
+                return (self.rep_option_km('Bear').rho - self.rep_option_k().rho) * self.delta_max \
+                        * 10000 /self.price_spread
 
     ############################################### REPLICATION
     def rep_option_k(self) -> VanillaOption:
@@ -246,8 +259,9 @@ class BinaryOption(BlackScholes):
                              self.__rep,
                              self.volatility)
 
-    def recorder(self):
-        li = [self.spot,
+    def recorder(self, date: str = "18/03/2022"):
+        li = [self.typ,
+                self.spot,
                 self.strike,
                 self.rate,
                 self.dividend,
@@ -257,7 +271,6 @@ class BinaryOption(BlackScholes):
                 self.price_spread,
                 self.delta_digital,
                 self.delta_spread,
-                self.delta_max,
                 self.gamma_digital,
                 self.gamma_spread,
                 self.vega_digital,
@@ -267,13 +280,16 @@ class BinaryOption(BlackScholes):
                 self.rho_digital,
                 self.rho_spread]
 
-        self.__record.loc[self.__record.shape[0]] = li
+        self.__record.loc[len(self.__record)] = li
+        idx = list(self.__record.index)
+        idx[-1] = date
+        self.__record.index = idx
 
-    def setter(self, inp: tuple):
+    def setter(self, inp: tuple, date: str):
         self.spot = inp[0]
         self.rate = inp[1]
         self.dividend = inp[2]
         self.volatility = inp[3]
         self.maturity = inp[4]
-        self.recorder()
+        self.recorder(date)
 

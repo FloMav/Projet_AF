@@ -2,6 +2,12 @@ import pandas as pd
 from Data import Data
 from Book import Book
 
+############## BEFORE STARTING ###############
+#Set up the inception date in the recorder (Vanilla/Binary)
+#Choose the pricing method (BS,...)
+#Set up annual basis, default=365)
+##############################################
+
 data = Data().imported_data
 
 
