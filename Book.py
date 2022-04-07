@@ -1,7 +1,6 @@
 import pandas as pd
 from BinaryOption import BinaryOption
 
-
 class Book:
     """
 
@@ -29,7 +28,8 @@ class Book:
                                      self.__data.iloc[0, self.__data.columns.get_loc('Volatility')],
                                      payoff=self.__opt[opt]['Payoff'],
                                      typ=self.__opt[opt]['Type'],
-                                     pricing_method=self.__pricing_method)
+                                     pricing_method=self.__pricing_method,
+                                     smile_active=False)
         self.__book: dict = dico
 
     @property
@@ -164,7 +164,6 @@ class Book:
         for opt in self.__opt:
             for date in self.__data.index[1:]:
                 tup = self.__data.loc[date, :].values.tolist()
-                tup.append(self.__opt[opt]['Maturity'])
                 tup = tuple(tup)
                 self.__book[opt].setter(tup, date)
         print("\n\n############ Backtest done ! ############\n")

@@ -4,8 +4,11 @@ from Book import Book
 
 ############## BEFORE STARTING ###############
 #Set up the inception date in the recorder (Vanilla/Binary)
+#Set up smile data provenance
+
 #Choose the pricing method (BS,...)
 #Set up annual basis, default=365)
+#Choose smile or not in BOOK
 ##############################################
 
 data = Data().imported_data

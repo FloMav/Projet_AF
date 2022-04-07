@@ -1,6 +1,7 @@
 from VanillaOption import VanillaOption
 from BlackScholes import BlackScholes
 import pandas as pd
+import Smile
 
 
 class BinaryOption(BlackScholes):
@@ -14,15 +15,22 @@ class BinaryOption(BlackScholes):
                  typ: str = 'C',
                  rep: str = 'C',
                  payoff: float = 1,
-                 delta_max: float = 10000,
+                 delta_max: float = 1,
                  pricing_method: str = 'BS',
-                 annual_basis: int = 365):
+                 annual_basis: int = 365,
+                 smile_active: bool = False):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
+        self._inception_date = "18/03/2022"
         self.__payoff = payoff
         self.__delta_max = delta_max
         self.__pricing_method = pricing_method
         self.__typ = typ
         self.__rep = rep
+        self.__smile_active = smile_active
+        self.__volatility_km_bear = 0
+        self.__volatility_km_bull = 0
+        self.__strike_km_bear = self.strike + self.overhedge_spread
+        self.__strike_km_bull = self.strike - self.overhedge_spread
         self.__record = pd.DataFrame(columns=['Type',
                                                 'Spot',
                                                 'Strike',
@@ -42,7 +50,13 @@ class BinaryOption(BlackScholes):
                                                 'Theta_spread',
                                                 'Rho_digital',
                                                 'Rho_spread'])
-        self.recorder()
+        if not self.__smile_active:
+            pass
+        else:
+            self.volatility = self.smile(self._inception_date, self.strike)
+            self.__volatility_km_bear = self.smile(self._inception_date, self.__strike_km_bear)
+            self.__volatility_km_bull = self.smile(self._inception_date, self.__strike_km_bull)
+        self.recorder(self._inception_date)
 
     def __str__(self):
         return 'Binary Option'
@@ -246,18 +260,26 @@ class BinaryOption(BlackScholes):
 
     def rep_option_km(self, b):
         if b == "Bear":
-            b = self.strike + self.overhedge_spread
-        elif b == "Bull":
-            b = self.strike - self.overhedge_spread
+            km = self.__strike_km_bear
+            if self.__smile_active:
+                volm = self.__volatility_km_bear
+            else:
+                volm = self.volatility
+        else:
+            km = self.__strike_km_bull
+            if self.__smile_active:
+                volm = self.__volatility_km_bull
+            else:
+                volm = self.volatility
         return VanillaOption(self.spot,
-                             b,
+                             km,
                              self.rate,
                              self.dividend,
                              self.maturity,
                              self.__rep,
-                             self.volatility)
+                             volm)
 
-    def recorder(self, date: str = "18/03/2022"):
+    def recorder(self, date: str):
         li = [self.typ,
                 self.spot,
                 self.strike,
@@ -287,7 +309,22 @@ class BinaryOption(BlackScholes):
         self.spot = inp[0]
         self.rate = inp[1]
         self.dividend = inp[2]
-        self.volatility = inp[3]
-        self.maturity = inp[4]
+        self.maturity -= 1
+        if not self.__smile_active:
+            self.volatility = inp[3]
+        else:
+            self.volatility = self.smile(date, self.strike)
+            self.__volatility_km_bear = self.smile(date, self.__strike_km_bear)
+            self.__volatility_km_bull = self.smile(date, self.__strike_km_bull)
         self.recorder(date)
+
+
+####################### SMILE
+
+    def smile(self, date, strike):
+        smile = Smile.Smile(self.spot, self.maturity, date)
+        volatility = smile.volatility(strike)
+        return volatility
+
+
 

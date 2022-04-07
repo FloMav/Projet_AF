@@ -6,8 +6,8 @@ data = Data().imported_data
 
 opt = dict()
 #Options(Type, Position, Nominal, Strike, Maturity(minuts))
-opt[1] = {'Type': 'C', 'Position': 'Long', 'Payoff': 2000, 'Strike': 45000, 'Maturity': 4}
-opt[2] = {'Type': 'C', 'Position': 'Long', 'Payoff': 2000, 'Strike': 44000, 'Maturity': 4}
+opt[1] = {'Type': 'C', 'Position': 'Long', 'Payoff': 1000, 'Strike': 45000, 'Maturity': 4}
+opt[2] = {'Type': 'C', 'Position': 'Long', 'Payoff': 1000, 'Strike': 44000, 'Maturity': 4}
 
 book = Book(data, opt)
 pd.set_option('display.max_columns', None)
