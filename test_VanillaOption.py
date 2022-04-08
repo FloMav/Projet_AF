@@ -11,7 +11,7 @@ print(f'Theta = {call.theta}')
 print(f'Vega = {call.vega}')
 print(f'Vega = {call.rho}')
 
-put = VanillaOption(100, 100, 0.05, 0.01, 30, typ='P', volatility=0.25)
+put = VanillaOption(10, 100, 0.05, 0.01, 30, typ='P', volatility=0.25)
 print("\n### Test Put")
 print(f'Price = {put.price}')
 print(f'Delta = {put.delta}')
