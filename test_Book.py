@@ -28,4 +28,6 @@ print("\n\n###### Test book_position\n")
 #print(book.book_objets[1].record.loc['18/03/2022'].values)
 #print(book.book_positions.keys())
 print(book.book_positions['18/03/2022'])
+print("\n Global Position")
+print(book.book_track)
 

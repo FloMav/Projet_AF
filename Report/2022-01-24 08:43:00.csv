@@ -1,3 +1,0 @@
-,Type,Position,Payoff,Spot,Strike,Interest Rate (%),Dividend Yield (%),Implied Volatility (%),Maturity T (minuts)
-Opt 1,C,0,1000,35150.6,35500,0,0,0,4
-Opt 2,C,0,5000,35150.6,35600,0,0,0,2
