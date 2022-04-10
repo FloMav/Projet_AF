@@ -317,6 +317,7 @@ class BinaryOption(BlackScholes):
             self.__volatility_km_bear = self.smile(date, self.__strike_km_bear)
             self.__volatility_km_bull = self.smile(date, self.__strike_km_bull)
         self.recorder(date)
+        return self.maturity
 
 
 ####################### SMILE
