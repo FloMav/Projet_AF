@@ -79,7 +79,7 @@ class Book:
                     df.loc[len(df)+1] = self.__book[opt].record.loc[date].values
                     if self.__opt[opt]['Position'] == 'Short':
                         df.loc[len(df), 'Price_digital'] *= -1
-                        df.loc[len(df) , 'Price_spread'] *= -1
+                        df.loc[len(df), 'Price_spread'] *= -1
                         df.loc[len(df), 'Delta_digital'] *= -1
                         df.loc[len(df), 'Delta_spread'] *= -1
                         df.loc[len(df), 'Gamma_digital'] *= -1
@@ -94,7 +94,7 @@ class Book:
                     idx[-1] = opt
                     df.index = idx
 
-            if df.shape[0] !=0:
+            if df.shape[0] != 0:
                 list_pos = [self.__opt[option]['Position'] for option in df.index]
                 df.insert(1, 'Position', list_pos)
                 #df.insert(9, 'Weight_digital', df["Price_digital"] / df["Price_digital"].sum() * 100)
@@ -178,8 +178,13 @@ class Book:
                 spot = df.loc[(date, "Options"), 'Spot']
                 rate = df.loc[(date, "Options"), 'Rate']
                 dividend = df.loc[(date, "Options"), 'Dividend']
+
                 digital_delta_hedge_value = df.loc[(date, "Options"), 'Spot'] * (-df.loc[(date, "Options"), 'Delta_digital'])
+                if np.isnan(digital_delta_hedge_value):
+                    digital_delta_hedge_value = 0
                 spread_delta_hedge_value = df.loc[(date, "Options"), 'Spot'] * (-df.loc[(date, "Options"), 'Delta_spread'])
+                if np.isnan(spread_delta_hedge_value):
+                    spread_delta_hedge_value = 0
                 try:
                     digital_delta_hedge_delta = - df.loc[(date, "Options"), 'Delta_digital'] * df.loc[(date, "Options"), 'Price_digital'] / digital_delta_hedge_value
                 except ZeroDivisionError:
@@ -188,6 +193,7 @@ class Book:
                     spread_delta_hedge_delta = - df.loc[(date, "Options"), 'Delta_spread'] * df.loc[(date, "Options"), 'Price_spread'] / spread_delta_hedge_value
                 except ZeroDivisionError:
                     spread_delta_hedge_delta = 0
+
 
                 df.loc[(date, "Delta_hedge")] = [spot,
                                                 np.NAN,
