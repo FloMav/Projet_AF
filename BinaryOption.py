@@ -18,7 +18,7 @@ class BinaryOption(BlackScholes):
                  delta_max: float = 1,
                  pricing_method: str = 'BS',
                  annual_basis: int = 365,
-                 smile_active: bool = True):
+                 smile_active: bool = False):
         BlackScholes.__init__(self, spot, strike, rate, dividend, maturity, volatility, annual_basis)
         self._inception_date = "12/03/2022"
         self.__payoff = payoff

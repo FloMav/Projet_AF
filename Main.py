@@ -20,16 +20,16 @@ data = Data().imported_data
 
 opt = dict()
 #Options(Type, Position, Nominal, Strike, Maturity(minuts))
-opt[1] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 30000, 'Maturity': 3}
-opt[2] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 50000, 'Maturity': 10}
-opt[3] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 45000, 'Maturity': 15}
-opt[4] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 44000, 'Maturity': 7}
-opt[5] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 42000, 'Maturity': 3}
-opt[6] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 53000, 'Maturity': 5}
-opt[7] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 60000, 'Maturity': 4}
-opt[8] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 70000, 'Maturity': 7}
-opt[9] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 55000, 'Maturity': 14}
-opt[10] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 70000, 'Maturity': 30}
+opt[1] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 30000, 'Maturity': 3}
+opt[2] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 50000, 'Maturity': 10}
+opt[3] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 45000, 'Maturity': 15}
+opt[4] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 44000, 'Maturity': 7}
+opt[5] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 42000, 'Maturity': 3}
+opt[6] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 53000, 'Maturity': 5}
+opt[7] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 60000, 'Maturity': 4}
+opt[8] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 70000, 'Maturity': 7}
+opt[9] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 55000, 'Maturity': 14}
+opt[10] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 70000, 'Maturity': 30}
 
 
 
@@ -52,5 +52,9 @@ print(book.book_positions['12/03/2022'])
 print(f"\n Global Position with initial cash = {book.initial_cash}")
 print(book.book_delta_hedge)
 
-
-
+for op in opt:
+    book.book_objets[op].record.to_csv(f"Report/opt{op}.csv")
+for date in book.book_positions:
+    dt = str(date[3] + date[4] + '_' + date[0] + date[1] + '_' + date[6] + date[7] + date[8] + date[9])
+    book.book_positions[date].to_csv(f"Report/positions_{dt}.csv")
+book.book_delta_hedge.to_csv("Report/delta_hedge.csv")
