@@ -76,20 +76,20 @@ class Book:
 
             for opt in self.__opt:
                 if date in self.__book[opt].record.index.values:
-                    df.loc[len(df)+1] = self.__book[opt].record.loc[date].values
+                    df.loc[opt] = self.__book[opt].record.loc[date].values
                     if self.__opt[opt]['Position'] == 'Short':
-                        df.loc[len(df), 'Price_digital'] *= -1
-                        df.loc[len(df), 'Price_spread'] *= -1
-                        df.loc[len(df), 'Delta_digital'] *= -1
-                        df.loc[len(df), 'Delta_spread'] *= -1
-                        df.loc[len(df), 'Gamma_digital'] *= -1
-                        df.loc[len(df), 'Gamma_spread'] *= -1
-                        df.loc[len(df), 'Vega_digital'] *= -1
-                        df.loc[len(df), 'Vega_spread'] *= -1
-                        df.loc[len(df), 'Theta_digital'] *= -1
-                        df.loc[len(df), 'Theta_spread'] *= -1
-                        df.loc[len(df), 'Rho_digital'] *= -1
-                        df.loc[len(df), 'Rho_spread'] *= -1
+                        df.loc[opt, 'Price_digital'] *= -1
+                        df.loc[opt, 'Price_spread'] *= -1
+                        df.loc[opt, 'Delta_digital'] *= -1
+                        df.loc[opt, 'Delta_spread'] *= -1
+                        df.loc[opt, 'Gamma_digital'] *= -1
+                        df.loc[opt, 'Gamma_spread'] *= -1
+                        df.loc[opt, 'Vega_digital'] *= -1
+                        df.loc[opt, 'Vega_spread'] *= -1
+                        df.loc[opt, 'Theta_digital'] *= -1
+                        df.loc[opt, 'Theta_spread'] *= -1
+                        df.loc[opt, 'Rho_digital'] *= -1
+                        df.loc[opt, 'Rho_spread'] *= -1
                     idx = list(df.index)
                     idx[-1] = opt
                     df.index = idx
