@@ -20,16 +20,16 @@ data = Data().imported_data
 
 opt = dict()
 #Options(Type, Position, Nominal, Strike, Maturity(minuts))
-opt[1] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 30000, 'Maturity': 3}
-opt[2] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 50000, 'Maturity': 10}
-opt[3] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 45000, 'Maturity': 15}
+opt[1] = {'Type': 'C', 'Position': 'Short', 'Payoff': 500, 'Strike': 30000, 'Maturity': 3}
+opt[2] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 50000, 'Maturity': 4}
+opt[3] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 45000, 'Maturity': 5}
 opt[4] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 44000, 'Maturity': 7}
-opt[5] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 42000, 'Maturity': 3}
-opt[6] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 53000, 'Maturity': 5}
-opt[7] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 60000, 'Maturity': 4}
-opt[8] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 70000, 'Maturity': 7}
-opt[9] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 55000, 'Maturity': 14}
-opt[10] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 70000, 'Maturity': 30}
+opt[5] = {'Type': 'C', 'Position': 'Short', 'Payoff': 5000, 'Strike': 50000, 'Maturity': 7}
+opt[6] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 47000, 'Maturity': 15}
+opt[7] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 60000, 'Maturity': 25}
+opt[8] = {'Type': 'C', 'Position': 'Short', 'Payoff': 50000, 'Strike': 70000, 'Maturity': 28}
+opt[9] = {'Type': 'C', 'Position': 'Short', 'Payoff': 1000, 'Strike': 55000, 'Maturity': 29}
+opt[10] = {'Type': 'C', 'Position': 'Short', 'Payoff': 10000, 'Strike': 30000, 'Maturity': 30}
 
 
 

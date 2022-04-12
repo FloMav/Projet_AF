@@ -2,7 +2,7 @@ from BinaryOption import BinaryOption
 import pandas as pd
 
 # Test digital call
-digital_call_repC = BinaryOption(38904, 30000, 0, 0.04, 3, delta_max=1, volatility=0.8073, payoff=1000,  typ='C', rep='C')
+digital_call_repC = BinaryOption(38904, 50000, 0, 0.04, 30, delta_max=1000, volatility=1, payoff=100000,  typ='C', rep='C')
 print("### Test digital call")
 print(f'Payoff = {digital_call_repC.payoff}')
 print(f'Delta_max = {digital_call_repC.delta_max}')

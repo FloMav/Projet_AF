@@ -35,7 +35,8 @@ class Book:
                                      payoff=self.__opt[opt]['Payoff'],
                                      typ=self.__opt[opt]['Type'],
                                      pricing_method=self.__pricing_method,
-                                     smile_active=False)
+                                     smile_active=False,
+                                     delta_max=500)
         self.__book: dict = dico
 
     @property
