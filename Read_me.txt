@@ -1,6 +1,6 @@
 Code developed by Florian MAVOLLE, Mathias BAUDRY, ALICIA PEREIRA RIBEIRO.
 
-You will find 4 direcroties:
+You will find 4 directories:
 - Class: all the classes that are used to perform the backtest.
 - Test: tests that allow to check the classes.
 - Data: input data for the market variables (spot, rate, div, ...) and the smile.
