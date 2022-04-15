@@ -1,0 +1,4 @@
+;Typ;Position;Spot;Strike;Rate;Dividend;Maturity;Volatility;Price_digital;Price_spread;Delta_digital;Delta_spread;Gamma_digital;Gamma_spread;Vega_digital;Vega_spread;Theta_digital;Theta_spread;Rho_digital;Rho_spread
+9;C;Short;39981.64;38000;0.0;0.04;0;0.651;-1000.0;-1000.0;;-0.0;;;;-0.0;;;-0.0;-0.0
+10;C;Short;39981.64;48000;0.0;0.04;0;0.651;-0.0;-1981.6399999999994;;-0.20176036010577103;;;;-0.0;;;;-0.0
+Options; ; ;39981.64;;0.0;0.04;;;-1000.0;-2981.6399999999994;-0.0;-0.1340927811539958;-0.0;-0.0;-0.0;-0.0;-0.0;-0.0;-0.0;-0.0
